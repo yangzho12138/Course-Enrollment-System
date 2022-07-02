@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.mapper.CourseInfoMapper">
+    <cache></cache>
+
+    <resultMap id="CourseResult" type="pojo.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_num" property="courseNum"></result>
+        <result column="course_type" property="courseType"></result>
+        <result column="description" property="description"></result>
+        <result column="room" property="room"></result>
+        <result column="credit" property="credit"></result>
+        <result column="capacity" property="capacity"></result>
+        <collection property="takenList" ofType="pojo.Taken">
+            <result column="course_id" property="courseId"></result>
+            <result column="schedule_id" property="scheduleId"></result>
+            <result column="room" property="room"></result>
+        </collection>
+        <collection property="prerequisiteList" ofType="pojo.Prerequisite">
+            <result column="course_id" property="courseId"></result>
+            <result column="prerequisite_id" property="prerequisiteId"></result>
+            <result column="prerequisite_name" property="prerequisiteName"></result>
+        </collection>
+        <collection property="teachList" ofType="pojo.Teach">
+            <result column="professor_id" property="professorId"></result>
+            <result column="course_id" property="courseId"></result>
+            <result column="professor_name" property="professorName"></result>
+        </collection>
+        <collection property="enrollmentList" ofType="pojo.Enrollment">
+            <result column="course_id" property="courseId"></result>
+            <result column="stu_id" property="stuId"></result>
+            <result column="grade" property="grade"></result>
+            <result column="stu_name" property="stuName"></result>
+        </collection>
+    </resultMap>
+
+
+    <sql id="condition">
+        <where>
+            <if test="courseId != null and courseId != '' ">
+                and course_id = #{courseId}
+            </if>
+            <if test="courseName != null and courseName != '' ">
+                and course_name = #{courseName}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findCourse" resultMap="CourseResult">
+        SELECT * FROM course AS c, schedule AS s, prerequisite AS p, teach AS t, enrollment AS e
+        <include refid="condition"></include>
+        and c.course_id = s.course_id and c.course_id = p.course_id and c.course_id = t.course_id and c.course_id = e.course_id
+    </select>
+
+</mapper>

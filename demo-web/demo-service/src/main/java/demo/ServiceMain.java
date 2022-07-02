@@ -1,10 +1,11 @@
 package demo;
 
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.xml.ws.Service;
 
+@EnableDubbo
 @SpringBootApplication
 public class ServiceMain {
     public static void main(String[] args) {

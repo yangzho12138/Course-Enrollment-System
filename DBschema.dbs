@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Stu_Uni_Platform" id="Project_16aef5e" template="Default" database="MySql" >
+	<schema name="stu_uni_platform" schemaname="stu_uni_platform" >
+		<table name="course" >
+			<column name="course_id" type="varchar" length="20" jt="12" mandatory="y" />
+			<column name="course_name" type="varchar" length="100" jt="12" />
+			<column name="course_type" type="varchar" length="20" jt="12" />
+			<column name="description" type="varchar" length="1000" jt="12" />
+			<column name="room" type="varchar" length="50" jt="12" />
+			<column name="credit" type="int" jt="4" />
+			<column name="capacity" type="int" jt="4" >
+				<comment><![CDATA[the number of students allowed to enroll in the course]]></comment>
+			</column>
+			<column name="course_num" type="varchar" length="20" jt="12" >
+				<comment><![CDATA[course number]]></comment>
+			</column>
+			<index name="pk_course_course_id" unique="PRIMARY_KEY" >
+				<column name="course_id" />
+			</index>
+		</table>
+		<table name="department" >
+			<column name="dept_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[department name]]></comment>
+			</column>
+			<column name="dept_addr" type="varchar" length="100" jt="12" >
+				<comment><![CDATA[department address]]></comment>
+			</column>
+			<column name="dept_phone" type="varchar" length="20" jt="12" >
+				<comment><![CDATA[department phone]]></comment>
+			</column>
+			<index name="pk_department_department_name" unique="PRIMARY_KEY" >
+				<column name="dept_name" />
+			</index>
+		</table>
+		<table name="enrollment" >
+			<column name="stu_id" type="char" length="10" decimal="0" jt="1" mandatory="y" >
+				<comment><![CDATA[student id]]></comment>
+			</column>
+			<column name="course_id" type="varchar" length="20" decimal="0" jt="12" mandatory="y" />
+			<column name="grade" type="int" jt="4" />
+			<column name="stu_name" type="varchar" length="100" jt="12" />
+			<index name="fk_enrollment_course" unique="NORMAL" >
+				<column name="course_id" options="ASC" />
+			</index>
+			<index name="pk_enrollment" unique="PRIMARY_KEY" >
+				<column name="stu_id" />
+				<column name="course_id" />
+			</index>
+			<fk name="fk_enrollment_course" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" update_action="restrict" >
+				<fk_column name="course_id" pk="course_id" />
+			</fk>
+			<fk name="fk_enrollment_student" to_schema="stu_uni_platform" to_table="student" delete_action="cascade" update_action="restrict" >
+				<fk_column name="stu_id" pk="stu_id" />
+				<comment><![CDATA[enroll in]]></comment>
+			</fk>
+		</table>
+		<table name="major" >
+			<column name="stu_id" type="char" length="10" jt="1" mandatory="y" >
+				<comment><![CDATA[student id]]></comment>
+			</column>
+			<column name="dept_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[department name]]></comment>
+			</column>
+			<column name="major" type="varchar" length="20" jt="12" mandatory="y" />
+			<index name="fk_major_department" unique="NORMAL" >
+				<column name="dept_name" />
+			</index>
+			<index name="fk_major_student" unique="NORMAL" >
+				<column name="stu_id" />
+			</index>
+			<fk name="fk_major_department" to_schema="stu_uni_platform" to_table="department" delete_action="cascade" >
+				<fk_column name="dept_name" pk="dept_name" />
+			</fk>
+			<fk name="fk_major_student" to_schema="stu_uni_platform" to_table="student" delete_action="cascade" >
+				<fk_column name="stu_id" pk="stu_id" />
+			</fk>
+		</table>
+		<table name="override" >
+			<column name="stu_id" type="char" length="10" jt="1" >
+				<comment><![CDATA[student id]]></comment>
+			</column>
+			<column name="course_id" type="varchar" length="20" jt="12" />
+			<column name="override" type="boolean" length="1" decimal="0" jt="-7" >
+				<defo>0</defo>
+				<comment><![CDATA[if the value is 1, the student can enroll in the course even when the available seats of the course is zero]]></comment>
+			</column>
+			<index name="idx_plan" unique="NORMAL" >
+				<column name="stu_id" />
+				<column name="course_id" />
+			</index>
+			<index name="fk_plan_course" unique="NORMAL" >
+				<column name="course_id" />
+			</index>
+			<fk name="fk_plan_course" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" >
+				<fk_column name="course_id" pk="course_id" />
+			</fk>
+			<fk name="fk_plan_student" to_schema="stu_uni_platform" to_table="student" >
+				<fk_column name="stu_id" pk="stu_id" />
+			</fk>
+		</table>
+		<table name="prerequisite" >
+			<column name="course_id" type="varchar" length="20" decimal="0" jt="12" mandatory="y" />
+			<column name="prerequisite_id" type="varchar" length="20" decimal="0" jt="12" mandatory="y" />
+			<column name="prerequisite_name" type="varchar" length="100" jt="12" />
+			<index name="fk_prerequisite_course2" unique="NORMAL" >
+				<column name="prerequisite_id" />
+			</index>
+			<index name="pk_prerequisite" unique="PRIMARY_KEY" >
+				<column name="course_id" />
+				<column name="prerequisite_id" />
+			</index>
+			<fk name="fk_prerequisite_course" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" >
+				<fk_column name="course_id" pk="course_id" />
+			</fk>
+			<fk name="fk_prerequisite_course2" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" >
+				<fk_column name="prerequisite_id" pk="course_id" />
+			</fk>
+		</table>
+		<table name="professor" >
+			<column name="professor_id" type="char" length="8" jt="1" mandatory="y" />
+			<column name="first name" type="varchar" length="100" jt="12" />
+			<column name="last_name" type="varchar" length="100" jt="12" />
+			<column name="dept_name" type="varchar" length="100" jt="12" />
+			<column name="phone" type="varchar" length="20" jt="12" />
+			<column name="room" type="varchar" length="100" jt="12" >
+				<comment><![CDATA[office room]]></comment>
+			</column>
+			<index name="pk_professor_professor_id" unique="PRIMARY_KEY" >
+				<column name="professor_id" />
+			</index>
+			<index name="fk_professor_department" unique="NORMAL" >
+				<column name="dept_name" />
+			</index>
+			<fk name="fk_professor_department" to_schema="stu_uni_platform" to_table="department" >
+				<fk_column name="dept_name" pk="dept_name" />
+			</fk>
+		</table>
+		<table name="schedule" >
+			<column name="start_time" type="char" length="8" decimal="0" jt="1" mandatory="y" >
+				<comment><![CDATA[xx:xx am]]></comment>
+			</column>
+			<column name="end_time" type="char" length="8" decimal="0" jt="1" mandatory="y" >
+				<comment><![CDATA[xx:xx am]]></comment>
+			</column>
+			<column name="weekday" type="varchar" length="5" decimal="0" jt="12" mandatory="y" />
+			<column name="course_id" type="varchar" length="20" decimal="0" jt="12" mandatory="y" />
+			<index name="idx_schedule" unique="PRIMARY_KEY" >
+				<column name="start_time" />
+				<column name="end_time" />
+				<column name="weekday" />
+				<column name="course_id" />
+			</index>
+			<index name="fk_schedule_course" unique="NORMAL" >
+				<column name="course_id" />
+			</index>
+			<fk name="fk_schedule_course" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" >
+				<fk_column name="course_id" pk="course_id" />
+			</fk>options="engine=InnoDB" 
+		</table>
+		<table name="student" >
+			<column name="stu_id" type="char" length="10" jt="1" mandatory="y" >
+				<comment><![CDATA[Student Id]]></comment>
+			</column>
+			<column name="first name" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="last name" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="age" type="int" jt="4" />
+			<column name="stu_phone" type="varchar" length="20" jt="12" />
+			<column name="identification" type="int" jt="4" >
+				<comment><![CDATA[undergraduate = 1, graduate or Phd = 5]]></comment>
+			</column>
+			<column name="enrollment_year" type="int" length="100" jt="4" />
+			<column name="status" type="varchar" length="100" jt="12" />
+			<index name="pk_student_id" unique="PRIMARY_KEY" >
+				<column name="stu_id" />
+			</index>
+		</table>
+		<table name="teach" >
+			<column name="professor_id" type="char" length="8" decimal="0" jt="1" mandatory="y" />
+			<column name="course_id" type="varchar" length="20" decimal="0" jt="12" mandatory="y" />
+			<column name="professor_name" type="varchar" length="100" jt="12" />
+			<index name="fk_teach_course" unique="NORMAL" >
+				<column name="course_id" />
+			</index>
+			<index name="pk_teach" unique="PRIMARY_KEY" >
+				<column name="professor_id" />
+				<column name="course_id" />
+			</index>
+			<fk name="fk_teach_professor" to_schema="stu_uni_platform" to_table="professor" delete_action="cascade" >
+				<fk_column name="professor_id" pk="professor_id" />
+			</fk>
+			<fk name="fk_teach_course" to_schema="stu_uni_platform" to_table="course" delete_action="cascade" >
+				<fk_column name="course_id" pk="course_id" />
+			</fk>
+		</table>
+		<trigger name="course_seats_decrese" table="enrollment" id="Trigger_344beef" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER course_seats_decrese AFTER INSERT ON enrollment FOR EACH ROW BEGIN
+UPDATE course SET capacity = capacity - 1 WHERE  NEW.course_id = course.course_id;
+END;]]></string>
+		</trigger>
+		<trigger name="course_seats_increase" table="enrollment" id="Trigger_fb2846" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER course_seats_increase AFTER DELETE ON enrollment FOR EACH ROW BEGIN
+UPDATE course SET capacity = capacity + 1 WHERE OLD.course_id = course.course_id;
+END;]]></string>
+		</trigger>
+	</schema>
+	<connector name="MyDatabase" database="MySql" driver_class="com.mysql.jdbc.Driver" driver_jar="mysql-connector-java-8.0.17.jar" driver_desc="Standard" host="localhost" port="3306" user="root" passwd="enkxOTk4MTAxNTA2MTg=" />
+	<layout name="Default Layout" id="Layout_fd0ec3" show_relation="columns" >
+		<entity schema="stu_uni_platform" name="department" color="C1D8EE" x="560" y="48" />
+		<entity schema="stu_uni_platform" name="major" color="C1D8EE" x="336" y="48" />
+		<entity schema="stu_uni_platform" name="schedule" color="C1D8EE" x="112" y="624" />
+		<entity schema="stu_uni_platform" name="professor" color="C1D8EE" x="560" y="224" />
+		<entity schema="stu_uni_platform" name="teach" color="C1D8EE" x="368" y="320" />
+		<entity schema="stu_uni_platform" name="prerequisite" color="C1D8EE" x="496" y="448" />
+		<entity schema="stu_uni_platform" name="course" color="C1D8EE" x="112" y="400" />
+		<entity schema="stu_uni_platform" name="enrollment" color="3986C1" x="48" y="240" />
+		<entity schema="stu_uni_platform" name="override" color="C1D8EE" x="176" y="240" />
+		<entity schema="stu_uni_platform" name="student" color="C1D8EE" x="144" y="48" />
+	</layout>
+</project>

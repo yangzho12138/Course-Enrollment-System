@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.mapper.CourseEnrollMapper">
+    <cache></cache>
+
+    <resultMap id="stuIdentification" type="pojo.Student">
+        <result column="identification" property="identification"></result>
+        <result column="enrollment_year" property="enrollmentYear"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <resultMap id="checkCourse" type="pojo.Course">
+        <result column="capacity" property="capacity"></result>
+        <result column="course_num" property="courseNum"></result>
+    </resultMap>
+
+    <resultMap id="idToName" type="pojo.Course">
+        <id column="prerequisite_id" property="courseId"></id>
+        <result column="prerequisite_name" property="courseName"></result>
+    </resultMap>
+
+    <select id="checkIdentification" resultMap="stuIdentification">
+        SELECT identification, enrollment_year, status FROM student WHERE stu_id = #{stuId}
+    </select>
+
+    <select id="checkOverride" resultType="Integer">
+        SELECT override FROM override WHERE course_id = #{param1} AND stu_id = #{param2}
+    </select>
+
+    <select id="checkSeatsAndLevel" resultMap="checkCourse">
+        SELECT capacity, course_num FROM course WHERE course_id = #{courseId}
+    </select>
+
+    <select id="hasPrerequisite" resultMap="idToName" resultType="pojo.Course">
+        SELECT prerequisite_id, prerequisite_name FROM prerequisite WHERE course_id = #{courseId}
+    </select>
+
+    <select id="checkPrerequisite" resultType="pojo.Course">
+        SELECT grade FROM enrollment WHERE course_id = #{param1} AND stu_id = #{param2}
+    </select>
+
+    <insert id="addCourse">
+        INSERT INTO enrollment VALUES(#{stuId},#{courseId},null,#{stuName})
+    </insert>
+
+</mapper>

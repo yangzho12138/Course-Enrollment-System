@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="demo-common" />
-        <module name="demo-gateway" />
         <module name="demo-service" />
+        <module name="demo-gateway" />
+        <module name="export" />
       </profile>
     </annotationProcessing>
   </component>
