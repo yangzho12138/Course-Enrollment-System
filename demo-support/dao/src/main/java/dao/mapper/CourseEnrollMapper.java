@@ -37,10 +37,16 @@ public interface CourseEnrollMapper {
     // courseId, stuId
     Integer checkPrerequisite(String courseId, String stuId);
 
+    // courseId
+    String findCourseNum(Map<String, Object> params);
+    List<String> lectureEnrolled(String courseNum);
+
     // add a course to the operation list
     int addCourse(Map<String, Object> params);
 
     // drop a course from the operation list
     int dropCourse(Map<String, Object> params);
+
+
 
 }

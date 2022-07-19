@@ -56,6 +56,14 @@
         SELECT grade FROM enrollment WHERE course_id = #{param1} AND stu_id = #{param2}
     </select>
 
+    <select id="findCourseNum" resultType="String">
+        SELECT course_num FROM course WHERE course_id = #{courseId}
+    </select>
+
+    <select id="lectureEnrolled" resultType="String">
+        SELECT course_id FROM course WHERE course_num = #{param1} AND course_type = 'lecture'
+    </select>
+
     <insert id="addCourse">
         INSERT INTO oplist VALUES(#{stuId},#{courseId})
     </insert>

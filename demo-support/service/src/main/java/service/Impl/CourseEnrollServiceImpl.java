@@ -49,18 +49,29 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
 
         // 1. drop courses
         for(Oplist op: dropList){
-            Map<String,Object> p = new HashMap<>();
-            p.put("stuId",op.getStuId());
-            p.put("courseId",op.getCourseId());
-            String info = courseOpList.dropCourse(p);
+            Map<String,Object> map = new HashMap<>();
+            map.put("stuId",op.getStuId());
+            map.put("courseId",op.getCourseId());
+            String info = courseOpList.dropCourse(map);
             res.add(info);
         }
         // 2. enroll courses
+        List<Map<String,Object>> discussions = new LinkedList<>();
         for(Oplist op : enrollList){
-            Map<String,Object> p = new HashMap<>();
-            p.put("stuId",op.getStuId());
-            p.put("courseId",op.getCourseId());
-            String info = courseOpList.enrollCourse(p);
+            Map<String,Object> map = new HashMap<>();
+            map.put("stuId",op.getStuId());
+            map.put("courseId",op.getCourseId());
+            String type = courseEnrollMapper.checkType(map);
+            if(type.equals("discussion")){
+                discussions.add(map);
+            }else if(type.equals("lecture")){
+                String info = courseOpList.enrollLecture(map);
+                res.add(info);
+            }
+        }
+
+        for(Map<String,Object> discussion : discussions){
+            String info = courseOpList.enrollDiscussion(params);
             res.add(info);
         }
 

@@ -15,20 +15,14 @@ public class CourseOpListImpl implements CourseOpList {
     @Autowired
     CourseEnrollMapper courseEnrollMapper;
 
-
     // parameters: stuId, courseId
-    public String enrollCourse(Map<String, Object> params){
+    public String enrollLecture(Map<String, Object> params){
         // check student status
 
         Student s = courseEnrollMapper.checkIdentification(params);
         if(s.getStatus().equals("registered") == false)
             return "Your student status is not illegal to register a course";
 
-        // check the dependencies:
-        String type = courseEnrollMapper.checkType(params);
-        if(type.equals("discussion")){
-            return " ";
-        }
         // check override
         Integer override = courseEnrollMapper.checkOverride(params);
         if(override != null && override == 1){ // check whether the value of override is null first, or it will report the NullPointer exception
@@ -91,7 +85,54 @@ public class CourseOpListImpl implements CourseOpList {
         return "Enroll in course: " + params.get("courseId") +" succeed";
     }
 
+    public String enrollDiscussion(Map<String, Object> params){
+        // check dependencies through
+        List<String> courseEnrolled = courseEnrollMapper.courseEnrolled(params);
+        String courseNum = courseEnrollMapper.findCourseNum(params);
+        List<String> lectureEnrolled = courseEnrollMapper.lectureEnrolled(courseNum);
 
+        boolean registerLec = false;
+        for(String lectureEnrolledId: lectureEnrolled){
+            for(String courseEnrolledId: courseEnrolled){
+                if(lectureEnrolledId == courseEnrolledId){
+                    registerLec = true;
+                    break;
+                }
+            }
+        }
+
+        if(registerLec == false){
+            return params.get("courseId") + " is a discussion part, please enroll in its corresponding lecture course";
+        }
+
+        // check the time conflict with enrolled courses
+        List<Integer> schedules = courseEnrollMapper.courseSchedule(params);
+        for(Integer schedule: schedules){
+            for(String courseEnrolledId: courseEnrolled){
+                Map<String, Object> map = new HashMap<>();
+                map.put("courseId",courseEnrolledId);
+                List<Integer> enrolledSchedules = courseEnrollMapper.courseSchedule(map);
+                for(Integer enrolledSchedule: enrolledSchedules){
+                    if(enrolledSchedule == schedule)
+                        return "Time conflicts!: "+ courseEnrolledId + " and " + params.get("courseId");
+                }
+            }
+        }
+
+        // check available seats
+        Map<String, Object> param = new HashMap<>();
+        param.put("courseId",params.get("courseId"));
+        Course c = courseEnrollMapper.checkSeatsAndLevel(param);
+        int available_seat = c.getCapacity();
+        if(available_seat<=0)
+            return "The is no seats available for the course: " + params.get("courseId");
+
+        // SQL Trigger —— capacity decrease
+        int res = courseEnrollMapper.enrollCourse(params);
+        if(res != 1)
+            return "Error: enroll in course: " + params.get("courseId") +" failed";
+        return "Enroll in course: " + params.get("courseId") +" succeed";
+    }
 
     public String dropCourse(Map<String, Object> params){
         // SQL Trigger —— capacity increase
