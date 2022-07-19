@@ -22,7 +22,7 @@ public class CourseInfoController {
     private CourseInfoService courseInfoService;
 
     // find a course through courseId or courseName
-    @RequestMapping(value = "/findCourse")
+    @RequestMapping(value = "/findCourse", method = RequestMethod.POST)
     public CommonResult findCourse(@RequestBody Map<String,Object> params){
         System.out.println(params);
         List<Course> courses = courseInfoService.findCourse(params);

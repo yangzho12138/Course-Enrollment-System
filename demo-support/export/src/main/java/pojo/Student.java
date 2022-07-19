@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student implements Serializable {
-    private String id;
+    private String stuId;
     private String firstName;
     private String lastName;
     private Integer age;

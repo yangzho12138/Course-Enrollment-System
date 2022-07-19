@@ -4,6 +4,7 @@ import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /*
 Author: Yang Zhou
@@ -14,6 +15,7 @@ Description: The module for students to plan their course-schedule and enroll in
 @EnableDubbo
 @SpringBootApplication
 @MapperScan("dao.mapper")
+@EnableAsync
 public class ServiceMain9001 {
     public static void main(String[] args) {
         SpringApplication.run(ServiceMain9001.class,args);
