@@ -65,7 +65,7 @@
     </select>
 
     <insert id="addCourse">
-        INSERT INTO oplist VALUES(#{stuId},#{courseId})
+        INSERT INTO oplist VALUES(#{stuId},#{courseId},'wait for operation')
     </insert>
 
     <delete id="dropCourse">

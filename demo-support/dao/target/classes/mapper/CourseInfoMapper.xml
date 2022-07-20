@@ -13,11 +13,10 @@
         <result column="room" property="room"></result>
         <result column="credit" property="credit"></result>
         <result column="capacity" property="capacity"></result>
-        <collection property="scheduleList" ofType="pojo.Schedule">
-            <result column="start_time" property="startTime"></result>
-            <result column="end_time" property="endTime"></result>
-            <result column="weekday" property="weekday"></result>
+        <collection property="takenList" ofType="pojo.Taken">
             <result column="course_id" property="courseId"></result>
+            <result column="schedule_id" property="scheduleId"></result>
+            <result column="room" property="room"></result>
         </collection>
         <collection property="prerequisiteList" ofType="pojo.Prerequisite">
             <result column="course_id" property="courseId"></result>

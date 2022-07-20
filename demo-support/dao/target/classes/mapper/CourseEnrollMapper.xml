@@ -24,8 +24,24 @@
         SELECT identification, enrollment_year, status FROM student WHERE stu_id = #{stuId}
     </select>
 
+    <select id="checkType" resultType="String">
+        SELECT course_type FROM course WHERE course_id = #{courseId}
+    </select>
+
     <select id="checkOverride" resultType="Integer">
-        SELECT override FROM override WHERE course_id = #{param1} AND stu_id = #{param2}
+        SELECT override FROM override WHERE course_id = #{courseId} AND stu_id = #{stuId}
+    </select>
+
+    <select id="courseEnrolled" resultType="String">
+        SELECT course_id FROM enrollment WHERE stu_id = #{stuId}
+    </select>
+
+    <select id="courseSchedule" resultType="Integer">
+        SELECT schedule_id FROM taken WHERE course_id = #{courseId}
+    </select>
+
+    <select id="checkCredit" resultType="Integer">
+        SELECT credit FROM course WHERE course_id = #{courseId}
     </select>
 
     <select id="checkSeatsAndLevel" resultMap="checkCourse">
@@ -40,8 +56,20 @@
         SELECT grade FROM enrollment WHERE course_id = #{param1} AND stu_id = #{param2}
     </select>
 
+    <select id="findCourseNum" resultType="String">
+        SELECT course_num FROM course WHERE course_id = #{courseId}
+    </select>
+
+    <select id="lectureEnrolled" resultType="String">
+        SELECT course_id FROM course WHERE course_num = #{param1} AND course_type = 'lecture'
+    </select>
+
     <insert id="addCourse">
-        INSERT INTO enrollment VALUES(#{stuId},#{courseId},null,#{stuName})
+        INSERT INTO oplist VALUES(#{stuId},#{courseId},'wait for operation')
     </insert>
+
+    <delete id="dropCourse">
+        DELETE FROM oplist WHERE course_id = #{courseId} AND stu_id = #{stuId}
+    </delete>
 
 </mapper>

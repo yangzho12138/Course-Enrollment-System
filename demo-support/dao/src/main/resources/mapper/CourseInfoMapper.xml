@@ -36,6 +36,11 @@
         </collection>
     </resultMap>
 
+    <resultMap id="getOpList" type="pojo.Oplist">
+        <id column="course_id" property="courseId"></id>
+        <result column="status" property="status"></result>
+    </resultMap>
+
 
     <sql id="condition">
         <where>
@@ -52,6 +57,14 @@
         SELECT * FROM course AS c, schedule AS s, prerequisite AS p, teach AS t, enrollment AS e
         <include refid="condition"></include>
         and c.course_id = s.course_id and c.course_id = p.course_id and c.course_id = t.course_id and c.course_id = e.course_id
+    </select>
+
+    <select id="getOpList" resultMap="getOpList">
+        SELECT course_id, status FROM oplist WHERE stu_id = #{stuId}
+    </select>
+
+    <select id="getOpListCourse" resultMap="CourseResult">
+        SELECT course_name, course_type, credit, course_num FROM course WHERE course_id = #{courseId}
     </select>
 
 </mapper>

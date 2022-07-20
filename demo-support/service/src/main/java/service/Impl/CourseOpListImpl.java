@@ -79,9 +79,12 @@ public class CourseOpListImpl implements CourseOpList {
             }
         }
         // SQL Trigger —— capacity decrease
+        // add course to
         int res = courseEnrollMapper.enrollCourse(params);
         if(res != 1)
             return "Error: enroll in course: " + params.get("courseId") +" failed";
+
+
         return "Enroll in course: " + params.get("courseId") +" succeed";
     }
 

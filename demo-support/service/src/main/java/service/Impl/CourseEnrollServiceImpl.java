@@ -26,10 +26,11 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
     CourseOpList courseOpList;
 
     public String addCourse(Map<String, Object> params){
+        log.info(params.toString());
         int res = courseEnrollMapper.addCourse(params);
         if(res != 1)
             return "Error: add course" + params.get("courseId") + " to the list failed";
-        return "Add course "+  params.get("courseId") +"succeed";
+        return "Add course "+  params.get("courseId") +" succeed";
     }
 
     @Transactional
@@ -39,9 +40,9 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
         List<Oplist> dropList = new LinkedList<>(); // faster than ArrayList in add
         List<Oplist> enrollList = new LinkedList<>();
         for(Oplist op : oplists){
-            if(op.getStatus().equals("enroll")){
+            if(op.getOperation().equals("enroll")){
                 enrollList.add(op);
-            }else if(op.getStatus().equals("drop")){
+            }else if(op.getOperation().equals("drop")){
                 dropList.add(op);
             }
         }

@@ -12,6 +12,7 @@ import java.util.Map;
 public interface CourseEnrollMapper {
     // enroll in a course
     int enrollCourse(Map<String, Object> params);
+
     // stuId
     Student checkIdentification(Map<String, Object> params);
 
