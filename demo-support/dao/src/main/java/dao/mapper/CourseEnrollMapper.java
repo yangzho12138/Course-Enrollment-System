@@ -12,6 +12,8 @@ import java.util.Map;
 public interface CourseEnrollMapper {
     // enroll in a course
     int enrollCourse(Map<String, Object> params);
+    // change status in Oplist after enrollment (stuId, courseId)
+    int changeStatus(String status, String stuId, String courseId);
 
     // stuId
     Student checkIdentification(Map<String, Object> params);

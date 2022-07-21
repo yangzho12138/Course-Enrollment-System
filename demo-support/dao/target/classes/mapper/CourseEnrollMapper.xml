@@ -64,6 +64,14 @@
         SELECT course_id FROM course WHERE course_num = #{param1} AND course_type = 'lecture'
     </select>
 
+    <insert id="enrollCourse">
+        INSERT INTO enrollment VALUES(#{stuId},#{courseId},null)
+    </insert>
+
+    <update id="changeStatus">
+        UPDATE oplist SET status = #{param1} WHERE stu_id = #{param2} and course_id = #{param3}
+    </update>
+
     <insert id="addCourse">
         INSERT INTO oplist VALUES(#{stuId},#{courseId},'wait for operation')
     </insert>

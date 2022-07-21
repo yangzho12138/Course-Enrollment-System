@@ -24,13 +24,18 @@ public class CourseInfoController {
     // find a course through courseId or courseName
     @RequestMapping(value = "/findCourse", method = RequestMethod.POST)
     public CommonResult findCourse(@RequestBody Map<String,Object> params){
-        System.out.println(params);
         List<Course> courses = courseInfoService.findCourse(params);
-        System.out.println(courses.size());
+        //System.out.println(courses.size());
         if(courses == null || courses.size()==0)
             return new CommonResult(0,"No related course found, please check the info",null);
         for(Course c:courses)
             System.out.println(c);
         return new CommonResult(1,"Course found!",courses);
+    }
+
+    @RequestMapping(value = "/opList", method = RequestMethod.POST)
+    public CommonResult infoInOpList(@RequestBody Map<String,Object> params){
+        List<Map<String, Object>> info = courseInfoService.infoInOpList(params);
+        return new CommonResult(1,"success",info);
     }
 }

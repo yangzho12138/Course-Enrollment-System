@@ -35,33 +35,33 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
 
     @Transactional
     public List<String> submitCourses(Map<String, Object> params){
-        List<Oplist> oplists = (List<Oplist>) params.get("OpCourses");
+        List<Map<String, Object>> oplists = (List<Map<String, Object>>)params.get("opCourses");
 
-        List<Oplist> dropList = new LinkedList<>(); // faster than ArrayList in add
-        List<Oplist> enrollList = new LinkedList<>();
-        for(Oplist op : oplists){
-            if(op.getOperation().equals("enroll")){
+        List<Map<String, Object>> dropList = new LinkedList<>(); // faster than ArrayList in add
+        List<Map<String, Object>> enrollList = new LinkedList<>();
+        for(Map<String, Object> op : oplists){
+            if(op.get("operation").equals("enroll")){
                 enrollList.add(op);
-            }else if(op.getOperation().equals("drop")){
+            }else if(op.get("operation").equals("drop")){
                 dropList.add(op);
             }
         }
         List<String> res = new ArrayList<>();
 
         // 1. drop courses
-        for(Oplist op: dropList){
+        for(Map<String, Object> op: dropList){
             Map<String,Object> map = new HashMap<>();
-            map.put("stuId",op.getStuId());
-            map.put("courseId",op.getCourseId());
+            map.put("stuId",params.get("stuId"));
+            map.put("courseId",op.get("courseId"));
             String info = courseOpList.dropCourse(map);
             res.add(info);
         }
         // 2. enroll courses
         List<Map<String,Object>> discussions = new LinkedList<>();
-        for(Oplist op : enrollList){
+        for(Map<String, Object> op : enrollList){
             Map<String,Object> map = new HashMap<>();
-            map.put("stuId",op.getStuId());
-            map.put("courseId",op.getCourseId());
+            map.put("stuId",params.get("stuId"));
+            map.put("courseId",op.get("courseId"));
             String type = courseEnrollMapper.checkType(map);
             if(type.equals("discussion")){
                 discussions.add(map);
@@ -72,7 +72,7 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
         }
 
         for(Map<String,Object> discussion : discussions){
-            String info = courseOpList.enrollDiscussion(params);
+            String info = courseOpList.enrollDiscussion(discussion);
             res.add(info);
         }
 

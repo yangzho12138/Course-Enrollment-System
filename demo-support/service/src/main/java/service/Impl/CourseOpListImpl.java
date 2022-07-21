@@ -18,7 +18,6 @@ public class CourseOpListImpl implements CourseOpList {
     // parameters: stuId, courseId
     public String enrollLecture(Map<String, Object> params){
         // check student status
-
         Student s = courseEnrollMapper.checkIdentification(params);
         if(s.getStatus().equals("registered") == false)
             return "Your student status is not illegal to register a course";
@@ -75,16 +74,16 @@ public class CourseOpListImpl implements CourseOpList {
                 Integer check_prerequisite = courseEnrollMapper.checkPrerequisite(course.getCourseId(),(String) params.get("stuId"));
                 // not finish or pass the course
                 if(check_prerequisite == null || check_prerequisite<60)
-                    return "You have not meet the course: " + params.get("courseId") +" prerequisite course requirement, please finish the course: "+course.getCourseName() + "first";
+                    return "You have not meet the course: " + params.get("courseId") +" prerequisite course requirement, please finish the course: "+course.getCourseName() + " first";
             }
         }
         // SQL Trigger —— capacity decrease
-        // add course to
+        // add course to the enrollment table
         int res = courseEnrollMapper.enrollCourse(params);
         if(res != 1)
             return "Error: enroll in course: " + params.get("courseId") +" failed";
-
-
+        // change status in the opList table
+        courseEnrollMapper.changeStatus("enrolled",(String)params.get("stuId"),(String)params.get("courseId"));
         return "Enroll in course: " + params.get("courseId") +" succeed";
     }
 
@@ -105,7 +104,7 @@ public class CourseOpListImpl implements CourseOpList {
         }
 
         if(registerLec == false){
-            return params.get("courseId") + " is a discussion part, please enroll in its corresponding lecture course";
+            return params.get("courseId") + " is a discussion part, please enroll in its corresponding lecture course first";
         }
 
         // check the time conflict with enrolled courses
@@ -134,6 +133,7 @@ public class CourseOpListImpl implements CourseOpList {
         int res = courseEnrollMapper.enrollCourse(params);
         if(res != 1)
             return "Error: enroll in course: " + params.get("courseId") +" failed";
+        courseEnrollMapper.changeStatus("enrolled",(String)params.get("stuId"),(String)params.get("courseId"));
         return "Enroll in course: " + params.get("courseId") +" succeed";
     }
 
@@ -142,6 +142,8 @@ public class CourseOpListImpl implements CourseOpList {
         int res = courseEnrollMapper.dropCourse(params);
         if(res != 1)
             return "Error: drop course " + params.get("courseId") + " from the list failed";
+        // change status in the opList table ( Scheduled Task to erase the dropped tasks at specific time)
+        courseEnrollMapper.changeStatus("dropped",(String)params.get("stuId"),(String)params.get("courseId"));
         return "Drop course" +  params.get("courseId") + "succeed";
     }
 }

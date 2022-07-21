@@ -22,5 +22,4 @@ public class Enrollment implements Serializable {
     @Min(value = 0, message = "grade can not be lower than 0")
     @Max(value = 100, message = "grade can not be higher than 100")
     private Integer grade;
-    private String stuName;
 }

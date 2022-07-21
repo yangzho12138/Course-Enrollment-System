@@ -16,7 +16,7 @@ import java.util.Map;
 public class CourseInfoServiceImpl implements CourseInfoService {
     @Autowired
     CourseInfoMapper courseInfoMapper;
-
+    // courseId or courseName
     public List<Course> findCourse(Map<String, Object> params){
         return courseInfoMapper.findCourse(params);
     }
