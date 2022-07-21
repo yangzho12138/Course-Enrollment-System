@@ -25,6 +25,11 @@ public interface CourseEnrollMapper {
     // courseId, stuId
     Integer checkOverride(Map<String, Object> params);
 
+    // courseId
+    String checkAttribute(Map<String, Object> params);
+    // stuId
+    List<String> checkMajor(Map<String, Object> params);
+
     // stuId
     List<String> courseEnrolled(Map<String, Object> params);
     // courseId

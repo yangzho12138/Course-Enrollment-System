@@ -32,6 +32,14 @@
         SELECT override FROM override WHERE course_id = #{courseId} AND stu_id = #{stuId}
     </select>
 
+    <select id="checkAttribute" resultType="String">
+        SELECT course_attribute FROM course WHERE course_id = #{courseId}
+    </select>
+
+    <select id="checkMajor" resultType="String">
+        SELECT major FROM major WHERE stu_id = #{stuId}
+    </select>
+
     <select id="courseEnrolled" resultType="String">
         SELECT course_id FROM enrollment WHERE stu_id = #{stuId}
     </select>

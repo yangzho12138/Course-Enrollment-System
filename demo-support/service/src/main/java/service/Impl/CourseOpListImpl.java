@@ -3,8 +3,8 @@ package service.Impl;
 
 import api.CourseOpList;
 import dao.mapper.CourseEnrollMapper;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import pojo.Course;
 import pojo.Student;
 
@@ -30,6 +30,22 @@ public class CourseOpListImpl implements CourseOpList {
                 return "Enrollment failed";
             return "Enrollment succeed";
         }
+
+        // check course attribute restrict
+        String[] courseAttribute = courseEnrollMapper.checkAttribute(params).split(" ");
+        List<String> stuMajor = courseEnrollMapper.checkMajor(params);
+        boolean beRestricted = true;
+        if(courseAttribute[0].equals("restricted")){
+            for(int i=1; i<courseAttribute.length; i++){
+                for(String major: stuMajor)
+                if(courseAttribute[i].equals(major)){
+                    beRestricted = false;
+                    break;
+                }
+            }
+        }
+        if(beRestricted == true)
+            return "This is a restricted course, your major can not choose it";
 
         // check the time conflict with enrolled courses
         List<String> courseEnrolled = courseEnrollMapper.courseEnrolled(params);

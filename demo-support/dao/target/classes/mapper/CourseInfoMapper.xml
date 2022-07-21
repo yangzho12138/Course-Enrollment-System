@@ -13,6 +13,7 @@
         <result column="room" property="room"></result>
         <result column="credit" property="credit"></result>
         <result column="capacity" property="capacity"></result>
+        <result column="course_attribute" property="attribute"></result>
         <collection property="takenList" ofType="pojo.Taken">
             <result column="course_id" property="courseId"></result>
             <result column="schedule_id" property="scheduleId"></result>
@@ -64,7 +65,7 @@
     </select>
 
     <select id="getOpListCourse" resultMap="CourseResult">
-        SELECT course_name, course_type, credit, course_num FROM course WHERE course_id = #{courseId}
+        SELECT course_name, course_type, credit, course_num, course_attribute FROM course WHERE course_id = #{courseId}
     </select>
 
 </mapper>

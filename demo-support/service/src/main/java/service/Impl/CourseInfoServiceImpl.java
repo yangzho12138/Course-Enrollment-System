@@ -12,31 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(group = "restricted-courses")
 public class CourseInfoServiceImpl implements CourseInfoService {
     @Autowired
     CourseInfoMapper courseInfoMapper;
     // courseId or courseName
     public List<Course> findCourse(Map<String, Object> params){
         return courseInfoMapper.findCourse(params);
-    }
-
-    // stuId
-    public List<Map<String, Object>> infoInOpList(Map<String, Object> params){
-        List<Map<String, Object>> infoList = new LinkedList<>();
-        List<Oplist> oplists = courseInfoMapper.getOpList(params);
-        for(Oplist oplist: oplists){
-            HashMap<String, Object> map = new HashMap<>();
-            String courseId = oplist.getCourseId();
-            map.put("courseId",courseId);
-            Course c = courseInfoMapper.getOpListCourse(map);
-            map.put("courseName",c.getCourseName());
-            map.put("courseType",c.getCourseType());
-            map.put("credit",c.getCredit());
-            map.put("courseNum",c.getCourseNum());
-            map.put("status",oplist.getStatus());
-            infoList.add(map);
-        }
-        return infoList;
     }
 }

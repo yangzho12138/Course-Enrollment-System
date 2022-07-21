@@ -1,24 +1,21 @@
 package demo.controller;
 
 import api.CourseInfoService;
-
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import pojo.Course;
 import utils.CommonResult;
 
 import java.util.List;
 import java.util.Map;
 
-/*
-author: Yang Zhou
-Date: 2022-6-28
- */
-
 @RestController
-@RequestMapping("/courses/info")
-public class CourseInfoController {
-    @Reference(group = "restricted-courses")
+@RequestMapping("public/courses/info")
+public class PublicCourseInfoController {
+    @Reference(group = "public-courses")
     private CourseInfoService courseInfoService;
 
     // find a course through courseId or courseName
@@ -32,5 +29,4 @@ public class CourseInfoController {
             System.out.println(c);
         return new CommonResult(1,"Course found!",courses);
     }
-
 }

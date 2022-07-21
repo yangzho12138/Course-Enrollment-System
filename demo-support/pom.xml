@@ -13,6 +13,7 @@
         <module>service</module>
         <module>dao</module>
         <module>common</module>
+        <module>public-service</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->

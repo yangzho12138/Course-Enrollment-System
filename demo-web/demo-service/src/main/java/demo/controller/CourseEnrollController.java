@@ -34,4 +34,11 @@ public class CourseEnrollController {
         List<String> info = courseEnrollService.submitCourses(params);
         return new CommonResult(1,"submitted",info);
     }
+
+    // info showed in Operation list
+    @RequestMapping(value = "/opList", method = RequestMethod.POST)
+    public CommonResult infoInOpList(@RequestBody Map<String,Object> params){
+        List<Map<String, Object>> info = courseEnrollService.infoInOpList(params);
+        return new CommonResult(1,"success",info);
+    }
 }

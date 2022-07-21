@@ -3,11 +3,14 @@ package service.Impl;
 import api.CourseEnrollService;
 import api.CourseOpList;
 import dao.mapper.CourseEnrollMapper;
+import dao.mapper.CourseInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import pojo.Course;
 import pojo.Oplist;
+
 
 import java.util.*;
 
@@ -24,6 +27,8 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
     CourseEnrollMapper courseEnrollMapper;
     @Autowired
     CourseOpList courseOpList;
+    @Autowired
+    CourseInfoMapper courseInfoMapper;
 
     public String addCourse(Map<String, Object> params){
         log.info(params.toString());
@@ -79,5 +84,24 @@ public class CourseEnrollServiceImpl implements CourseEnrollService {
         return res;
     }
 
+    // stuId
+    public List<Map<String, Object>> infoInOpList(Map<String, Object> params){
+        List<Map<String, Object>> infoList = new LinkedList<>();
+        List<Oplist> oplists = courseInfoMapper.getOpList(params);
+        for(Oplist oplist: oplists){
+            HashMap<String, Object> map = new HashMap<>();
+            String courseId = oplist.getCourseId();
+            map.put("courseId",courseId);
+            Course c = courseInfoMapper.getOpListCourse(map);
+            map.put("courseName",c.getCourseName());
+            map.put("courseType",c.getCourseType());
+            map.put("credit",c.getCredit());
+            map.put("courseNum",c.getCourseNum());
+            map.put("status",oplist.getStatus());
+            map.put("attribute",c.getAttribute());
+            infoList.add(map);
+        }
+        return infoList;
+    }
 
 }

@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dao" />
         <module name="common" />
+        <module name="public-service" />
         <module name="export" />
         <module name="service" />
       </profile>
@@ -19,6 +20,7 @@
       <module name="dao" target="1.8" />
       <module name="demo-support" target="1.8" />
       <module name="export" target="1.8" />
+      <module name="public-service" target="1.8" />
       <module name="service" target="1.8" />
     </bytecodeTargetLevel>
   </component>

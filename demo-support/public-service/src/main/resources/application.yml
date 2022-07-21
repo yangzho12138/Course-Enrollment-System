@@ -1,0 +1,32 @@
+server:
+  port: 9002
+
+dubbo:
+  application:
+    name: course-enrollment-service
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    name: dubbo
+    port: 20881
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/Stu_Uni_Platform?serverTimezone=UTC
+      username: root
+      password: zy199810150618
+      initialize: true
+
+mybatis:
+  mapper-locations: mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    mybatis:
+      mybatisdemo:
+        mapper=debug: debug

@@ -26,6 +26,7 @@ public class Course implements Serializable {
     private Integer credit;
     @Min(value = 0,message = "capacity can not be lower than 0")
     private Integer capacity;
+    private String attribute;
     private List<Taken> takenList ;
     private List<Prerequisite> prerequisiteList;
     private List<Teach> teachList;

@@ -1,9 +1,10 @@
 package service.ScheduledTasks;
 
 import dao.mapper.CourseEnrollMapper;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+
 
 @Service
 public class OpListScheduled {
