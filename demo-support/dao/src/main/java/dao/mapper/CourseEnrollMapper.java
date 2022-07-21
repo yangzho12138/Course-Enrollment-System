@@ -2,7 +2,6 @@ package dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import pojo.Course;
-import pojo.Schedule;
 import pojo.Student;
 
 import java.util.List;
@@ -14,6 +13,8 @@ public interface CourseEnrollMapper {
     int enrollCourse(Map<String, Object> params);
     // change status in Oplist after enrollment (stuId, courseId)
     int changeStatus(String status, String stuId, String courseId);
+    // delete dropped courses in operation list
+    int deleteDroppedCourse();
 
     // stuId
     Student checkIdentification(Map<String, Object> params);

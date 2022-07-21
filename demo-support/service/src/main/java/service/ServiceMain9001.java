@@ -5,6 +5,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /*
 Author: Yang Zhou
@@ -16,6 +17,7 @@ Description: The module for students to plan their course-schedule and enroll in
 @SpringBootApplication
 @MapperScan("dao.mapper")
 @EnableAsync
+@EnableScheduling
 public class ServiceMain9001 {
     public static void main(String[] args) {
         SpringApplication.run(ServiceMain9001.class,args);
